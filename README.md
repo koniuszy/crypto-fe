@@ -17,12 +17,6 @@ First, node_modules:
 yarn
 ```
 
-Env vars:
-
-```bash
-cp .env.sample .env.local
-```
-
 The development server:
 
 ```bash

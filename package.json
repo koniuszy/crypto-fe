@@ -10,10 +10,6 @@
     "serve": "NODE_ENV=production npx next start -p 4000",
     "heroku-postbuild": "npm run build"
   },
-  "engines": {
-    "node": "15.5.0",
-    "yarn": "1.22.10"
-  },
   "dependencies": {
     "@apollo/client": "^3.3.6",
     "@types/lodash.debounce": "^4.0.6",

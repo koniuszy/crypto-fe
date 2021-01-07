@@ -1,12 +1,31 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# Goal
+
+![alt text](https://github.com/koniuszy/crypto-fe/blob/main/task.png?raw=true)
+
+## Requirements
+
+- Node
+- Yarn
+
 ## Getting Started
 
-First, run the development server:
+First, node_modules:
 
 ```bash
-npm run dev
-# or
+yarn
+```
+
+Env vars:
+
+```bash
+cp .env.sample .env.local
+```
+
+The development server:
+
+```bash
 yarn dev
 ```
 

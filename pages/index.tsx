@@ -10,18 +10,15 @@ import Skeleton from 'react-loading-skeleton'
 import useConstant from '../hooks/useConstant'
 import getGqlClient from '../lib/GqlClient'
 
-type Market = {
-  name: string
-  usdValue: number
-}
-
 type AppStaticProps = {
   btcMarketData: {
-    btcAmount: number
-    bestBidsMarket: Market
-    bestAsksMarket: Market
-    errorMessageList: string[]
     date: string
+    btcAmount: number
+    errorMessageList: string[]
+    bestBidsMarketName: null | string
+    bestAsksMarketName: null | string
+    bidsUsdValue: number
+    asksUsdValue: number
   }
 }
 
@@ -31,14 +28,10 @@ const btcMarketDataQuery = gql`
       date
       btcAmount
       errorMessageList
-      bestBidsMarket {
-        name
-        usdValue
-      }
-      bestAsksMarket {
-        name
-        usdValue
-      }
+      bestBidsMarketName
+      bestAsksMarketName
+      bidsUsdValue
+      asksUsdValue
     }
   }
 `
@@ -82,29 +75,29 @@ const App: FC<AppStaticProps> = (props) => {
         <h1>{bitcoinsAmount}</h1>
 
         <h2>Where should you trade to sell your Bitcoins?</h2>
-        {loading ? <Skeleton /> : <p>{btcMarketData.bestBidsMarket.name ?? 'no results'}</p>}
+        {loading ? <Skeleton /> : <p>{btcMarketData.bestBidsMarketName ?? 'no results'}</p>}
 
         <h2>You will sell {bitcoinsAmount} for</h2>
         {loading ? (
           <Skeleton />
         ) : (
           <p>
-            {btcMarketData.bestBidsMarket.usdValue
-              ? `${prettifyNumber(btcMarketData.bestBidsMarket.usdValue)} $`
+            {btcMarketData.bidsUsdValue
+              ? `${prettifyNumber(btcMarketData.bidsUsdValue)} $`
               : 'no results'}
           </p>
         )}
 
         <h2>Where should you trade to buy some Bitcoins?</h2>
-        {loading ? <Skeleton /> : <p>{btcMarketData.bestAsksMarket.name ?? 'no results'}</p>}
+        {loading ? <Skeleton /> : <p>{btcMarketData.bestAsksMarketName ?? 'no results'}</p>}
 
         <h2>You will buy {bitcoinsAmount} for</h2>
         {loading ? (
           <Skeleton />
         ) : (
           <p>
-            {btcMarketData.bestAsksMarket.usdValue
-              ? `${prettifyNumber(btcMarketData.bestAsksMarket.usdValue)} $`
+            {btcMarketData.asksUsdValue
+              ? `${prettifyNumber(btcMarketData.asksUsdValue)} $`
               : 'no results'}
           </p>
         )}
@@ -157,7 +150,7 @@ export default App
 
 export const getStaticProps: GetStaticProps<AppStaticProps> = async () => {
   const gqlApiEndpoint = process.env.GQL_API_ENDPOINT
-  console.log({ gqlApiEndpoint })
+
   const client = getGqlClient(gqlApiEndpoint)
 
   const {

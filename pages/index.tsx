@@ -14,11 +14,12 @@ type AppStaticProps = {
   btcMarketData: {
     date: string
     btcAmount: number
-    errorMessageList: string[]
-    bestBidsMarketName: null | string
-    bestAsksMarketName: null | string
+    markets: string[]
     bidsUsdValue: number
     asksUsdValue: number
+    errorMessageList: string[]
+    bestAsksMarketName: null | string
+    bestBidsMarketName: null | string
   }
 }
 
@@ -26,6 +27,7 @@ const btcMarketDataQuery = gql`
   query BtcMarketData($amount: Float!) {
     btcMarketData(amount: $amount) {
       date
+      markets
       btcAmount
       errorMessageList
       bestBidsMarketName
@@ -51,7 +53,7 @@ const App: FC<AppStaticProps> = (props) => {
     btcMarketDataQuery,
     {
       variables: { amount: btcAmount },
-      pollInterval: btcAmount > 5 ? 2000 : 500,
+      pollInterval: btcAmount > 5 ? 3000 : 1000,
     }
   )
 
@@ -73,6 +75,12 @@ const App: FC<AppStaticProps> = (props) => {
 
       <main>
         <h1>{bitcoinsAmount}</h1>
+        <p>
+          It compares results from markets:{' '}
+          {btcMarketData.markets.map((name) => (
+            <React.Fragment key={name}>{name} </React.Fragment>
+          ))}
+        </p>
 
         <h2>Where should you trade to sell your Bitcoins?</h2>
         {loading ? <Skeleton /> : <p>{btcMarketData.bestBidsMarketName ?? 'no results'}</p>}

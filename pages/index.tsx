@@ -59,7 +59,7 @@ const App: FC<AppStaticProps> = (props) => {
 
   const { btcMarketData } = data
 
-  const bitcoinsAmount = btcAmount === 1 ? '1 Bitcoin' : `${prettifyNumber(btcAmount)} Bitcoins`
+  const bitcoinsAmount = btcAmount === 1 ? '1 Bitcoin' : `${prettifyNumber(btcAmount, 8)} Bitcoins`
   const debouncedRefetch = useConstant(() =>
     debounce((value: number) => {
       setBtcAmount(value)
